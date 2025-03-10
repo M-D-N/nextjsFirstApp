@@ -22,3 +22,21 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.container{
+  max-width: 1250px;
+  width: 100%;
+  margin: 0 auto; 
+}
+.container p,
+.container h1{
+  text-align: center;
+}
+h1{
+  font-size: 30px;
+}
+.about__ul{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
