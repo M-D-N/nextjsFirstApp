@@ -1,31 +1,31 @@
-import { Metadata } from "next";
+"use client";
+
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 async function getData(id: string) {
-    const response = await fetch(`https://my-json-server.typicode.com/typicode/demo/posts/${id}`, {
-        next: {
-            revalidate: 60
-        }
-    });
-
-    return response.json()
+  const response = await fetch(`https://my-json-server.typicode.com/typicode/demo/posts/${id}`);
+  if (!response.ok) throw new Error("Ошибка загрузки данных");
+  return response.json();
 }
 
-export const metada: Metadata = {
-    title: "Blog - Post | Page",
-};
+export default function Post() {
+  const params = useParams(); // Теперь params доступен синхронно
+  const [post, setPost] = useState(null);
 
-type Props = {
-  params: { id: string };
-};
+  useEffect(() => {
+    if (params?.id) {
+      getData(params.id).then(setPost).catch(console.error);
+    }
+  }, [params?.id]);
 
-export default async function Post({ params }: Props) {
-    const post = await getData(params.id);
-    return (
-      <>
-      <div className="container">
-        <h1>{post.title}</h1>
-        <h2>{post.id}</h2>
-      </div>
-      </>
-    );
-  }
+  if (!post) return <div>Загрузка...</div>;
+
+  return (
+    <div className="container">
+      <h1>{post.title}</h1>
+      <h2>{post.id}</h2>
+      <p>TEST</p>
+    </div>
+  );
+}
